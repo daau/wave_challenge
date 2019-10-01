@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="section">
+    <h1>Pay Periods</h1>
+    <% if @pay_periods.any? %>
+    <table class="payroll-report">
+      <thead>
+        <tr>
+          <th>Employee ID</th>
+          <th>Pay Period</th>
+          <th>Amount Paid</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @pay_periods.each do |pay_period| %>
+          <tr>
+            <td><%= pay_period.employee_long_id %></td>
+            <td><%= "#{pay_period.start_date.strftime('%_d/%_m/%y')} - #{pay_period.end_date.strftime('%_d/%_m/%y')}" %></td>
+            <td>$<%= '%.2f' % pay_period.total_earnings %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% else %>
+      <span>Upload a shift report to view pay period data!</span>
+    <% end %>
+  </div>
+
+  <div class="section">
+    <h1>Upload a new shift report</h1>
+    <%= form_with(url: {action: :create, controller: :shift_reports}, multipart: true) do |f| %>
+      <%= file_field_tag 'report_file' %>
+      <%= f.submit %>
+    <% end %>
+  </div>
+</div>
